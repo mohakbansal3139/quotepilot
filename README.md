@@ -11,8 +11,8 @@ AI-assisted quote drafting for industrial-supplies distributors. Course project 
 
 ## Demo status and honesty notes
 
-- This is a working prototype with a **synthetic sample catalog** (fictional SKUs, prices and stock in `public/catalog.js`). A production deployment would match against the distributor's own catalog, stock and price data.
-- AI extraction calls a real LLM: on a static host the browser calls the free Pollinations.ai API directly (open models, no key, CORS-enabled); when deployed on Netlify, `netlify/functions/extract.js` handles it server-side instead, and setting a `GEMINI_API_KEY` environment variable switches that path to Gemini 2.0 Flash. No keys are stored in this repo or in client code.
+- This is a working prototype with a **synthetic sample catalog** (fictional SKUs, prices and stock in `docs/catalog.js`). A production deployment would match against the distributor's own catalog, stock and price data.
+- AI extraction calls a real LLM: the browser calls the free Pollinations.ai API directly (open models, no key, CORS-enabled). No keys are stored in this repo or in client code.
 - Because pasted text goes to a third-party AI provider, the UI tells users not to paste real or confidential customer requests in this demo.
 - PDF/photo/voice-note intake and real customer-data pilots are future scope from the project proposal, not implemented here.
 
@@ -22,8 +22,8 @@ Paste the sample enquiry ("Load sample enquiry"), click "Extract with AI", revie
 
 ## Stack
 
-Static frontend (`docs/`, deployable to GitHub Pages or any static host) + an optional Netlify serverless function (`netlify/functions/extract.js`) for keyed providers. No build step. Quote PDF generated client-side with jsPDF.
+Static frontend in `docs/`, no build step. The live site at https://quotepilot.dhukaan.in is served by GitHub Pages from the `docs/` folder. Quote PDF generated client-side with jsPDF.
 
 ## Local development
 
-Any static server for `docs/`, GitHub Pages from the `docs/` folder, plus `netlify dev` for the optional function.
+Any static server for `docs/`; production is GitHub Pages from the `docs/` folder.

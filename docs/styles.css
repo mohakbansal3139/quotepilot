@@ -46,3 +46,7 @@ tr.needs-attention td { background: #fffaf0; }
 .hidden { display: none; }
 footer { border-top: 1px solid var(--line); padding: 18px 0; color: var(--muted); font-size: 12.5px; }
 @media (max-width: 720px) { th:nth-child(2), td:nth-child(2) { display: none; } }
+
+.review-gate { display: block; margin: 12px 0 4px; padding: 10px 12px; background: #fef3c7; border: 1px solid #fcd34d; border-radius: 8px; font-weight: 600; cursor: pointer; }
+.review-gate input { margin-right: 8px; }
+.review-gate.hidden { display: none; }

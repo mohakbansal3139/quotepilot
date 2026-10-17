@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QuotePilot - AI-assisted quote drafting</title>
 <meta name="description" content="QuotePilot turns messy customer enquiries into structured, approval-ready quote drafts for industrial-supplies distributors.">
-<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="styles.css?v=7">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 </head>
@@ -24,12 +24,12 @@
   <section class="card" id="step-rfq">
     <h2><span class="stepnum">1</span> Paste the customer enquiry</h2>
     <p class="muted">Paste the RFQ text exactly as the rep received it. The AI extracts items, quantities and specifications, and flags anything ambiguous.</p>
+    <p class="disclosure">Demo notice: pasted text is processed by a third-party AI provider (Pollinations.ai, open models) for extraction. Do not paste real or confidential customer requests - use the synthetic sample or test text only.</p>
     <textarea id="rfq-input" rows="8" placeholder="Paste the customer's enquiry here..."></textarea>
     <div class="row">
       <button id="btn-sample" class="ghost" type="button">Load sample enquiry</button>
       <button id="btn-extract" class="primary" type="button">Extract with AI</button>
     </div>
-    <p class="disclosure">Demo notice: pasted text is processed by a third-party AI provider (Pollinations.ai, open models) for extraction. Do not paste real or confidential customer requests - use the synthetic sample or test text only.</p>
     <p id="extract-status" class="status" role="status"></p>
   </section>
 
@@ -49,6 +49,7 @@
     <div id="quote-meta" class="quote-meta"></div>
     <div id="quote-preview"></div>
     <div id="quote-flags"></div>
+    <label class="review-gate hidden" id="review-gate"><input type="checkbox" id="chk-reviewed"> I have reviewed every line and the open flags above.</label>
     <div class="row">
       <button id="btn-back" class="ghost" type="button">Back to items</button>
       <button id="btn-download" class="primary" type="button">Download quote PDF</button>
@@ -67,7 +68,7 @@
     <p>QuotePilot prototype - AI in Business course project. Human approval is required before any quote reaches a customer. Extraction is AI-assisted and can be wrong; the review step exists for that reason.</p>
   </div>
 </footer>
-<script src="catalog.js?v=6"></script>
-<script src="app.js?v=6"></script>
+<script src="catalog.js?v=7"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>

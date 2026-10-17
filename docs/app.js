@@ -48,19 +48,7 @@ async function extract() {
   setStatus('AI is reading the enquiry and matching the catalog. This can take 10-30 seconds.');
   try {
     let items = null, engine = '';
-    // Preferred: server-side function when deployed on Netlify (supports keyed providers).
-    try {
-      const res = await fetch('/api/extract', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rfqText, catalog: SAMPLE_CATALOG })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data.items)) { items = data.items; engine = data.engine || 'server-function'; }
-      }
-    } catch (_) { /* static host - fall through to direct provider call */ }
-    if (!items) {
+    {
       // Static-host path: call the free open-model API directly from the browser.
       // No key is required or embedded; the UI discloses this third-party processing.
       const res = await fetch('https://text.pollinations.ai/', {
@@ -85,7 +73,12 @@ async function extract() {
     state.items = items.map(it => {
       const nz = normalizeSku(it.matched_sku);
       const flags = Array.isArray(it.flags) ? it.flags.map(String) : [];
-      if (nz.snapped) { flags.push('match adjusted to nearest catalog SKU'); }
+      if (nz.snapped) { flags.push('SKU normalized to nearest catalog entry'); }
+      const matchedCat = SAMPLE_CATALOG.find(c => c.sku === nz.sku);
+      if (matchedCat && (nz.snapped || (it.match_confidence && it.match_confidence !== 'high'))) {
+        const assumed = assumedSpecs(matchedCat, it);
+        if (assumed.length) flags.push('match assumes specs not stated in enquiry: ' + assumed.join(', '));
+      }
       if (it.matched_sku && !nz.sku) { flags.push('suggested match not in catalog'); }
       let conf = it.match_confidence || 'none';
       if (!nz.sku) conf = 'none';
@@ -174,6 +167,15 @@ function syncItemFromInputs() {
 }
 
 
+function assumedSpecs(cat, it) {
+  const hay = (String(it.specs || '') + ' ' + String(it.raw_text || '')).toLowerCase();
+  return cat.spec.split(',').map(a => a.trim()).filter(attr => {
+    if (!attr) return false;
+    const tokens = attr.toLowerCase().split(/[\s()/]+/).filter(t => t.length > 1);
+    return tokens.length && !tokens.some(t => hay.includes(t));
+  });
+}
+
 function normalizeSku(raw) {
   if (!raw) return { sku: '', snapped: false };
   const r = String(raw).trim().toUpperCase();
@@ -189,6 +191,8 @@ function escapeHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/
 
 function buildQuote() {
   syncItemFromInputs();
+  const gate = $('#chk-reviewed');
+  if (gate) gate.checked = false;
   const today = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
   $('#quote-meta').innerHTML = `
     <label>Customer name <input id="q-customer" placeholder="e.g. Demo Customer"></label>
@@ -240,6 +244,11 @@ function renderQuote() {
   $('#quote-flags').innerHTML = open.length
     ? `<p class="disclosure"><strong>Open flags to resolve before sending:</strong><br>${open.map(escapeHtml).join('<br>')}</p>`
     : '<p class="disclosure" style="color:var(--ok);background:#d1fae5;border-color:#6ee7b7">All lines resolved. The rep should still sanity-check prices and availability.</p>';
+  const gate = $('#review-gate'), btn = $('#btn-download');
+  if (gate && btn) {
+    gate.classList.toggle('hidden', !open.length);
+    btn.disabled = open.length > 0;
+  }
 }
 
 function downloadPdf() {
@@ -308,5 +317,7 @@ $('#btn-add-item').addEventListener('click', () => {
 $('#btn-build-quote').addEventListener('click', buildQuote);
 $('#btn-back').addEventListener('click', () => { $('#step-quote').classList.add('hidden'); $('#step-review').scrollIntoView({ behavior: 'smooth' }); });
 $('#btn-download').addEventListener('click', downloadPdf);
+const chkReviewed = $('#chk-reviewed');
+if (chkReviewed) chkReviewed.addEventListener('change', () => { $('#btn-download').disabled = !chkReviewed.checked; });
 
 renderCatalog();

@@ -1,0 +1,37 @@
+You are an independent product reviewer. A student built the product below for a university course submission (due tonight) and wants your honest, evidence-based assessment. Do not be polite at the expense of accuracy. If you cannot open or test the link (no browsing or tool access), say so explicitly at the top and review only from the description below. Never claim you tested something you did not, and never give a fake pass.
+
+COURSE CONTEXT: this is for a university "AI in Business-2" course. The course's own numbering calls this Submission 3; on the submission platform (Shipped) it is filed as "Submission 1 - working product". Review it against the requirements below, not against later stages.
+
+PRODUCT: QuotePilot
+Live URL: https://quotepilot.dhukaan.in
+Public repository: https://github.com/mohakbansal3139/quotepilot
+One-line pitch: turns a messy customer enquiry (pasted email/WhatsApp text) into an approval-ready quotation draft for industrial-supplies distributors, using real AI extraction with a human review step built into the flow.
+
+HOW TO TEST (about 2 minutes, no login):
+1. Open the live URL.
+2. Click "Load sample enquiry".
+3. Click "Extract with AI" and wait 20-30 seconds (a real open LLM processes the text).
+4. Inspect the review table: edit a quantity, note the flagged lines.
+5. Click "Review quote draft", then "Download quote PDF" and open the PDF.
+
+ASSIGNMENT REQUIREMENTS: these are the verified platform requirements available for this review, quoted from the submission platform's official guide. A separate professor-specific rubric has not been verified here - do not assume these exhaust the course brief. This stage requires:
+a) A working product reachable at a custom HTTPS domain the student controls. Default platform URLs such as .vercel.app or .lovable.app are explicitly not accepted.
+b) The product's GitHub repository connected with a read-only access key.
+c) A described core task that an instructor can test, with the expected result.
+d) No passwords, API keys or real customer data in the submission notes.
+Analytics, search-console and payment integrations are explicitly NOT part of this stage; they belong to a later submission.
+
+WHAT THE BUILDER CLAIMS (verify each against the live product where you can):
+1. Real AI extraction: pasted enquiry text is processed by a third-party AI provider (open models via the Pollinations.ai free API, called from the browser) and turned into structured line items with quantities, units and specifications. Ambiguity is flagged (for example an item with no quantity, or a deadline mention).
+2. Catalog matching with honesty: each line is matched against a synthetic sample catalog with a confidence level. Near-matches snap to the closest catalog SKU and are visibly flagged as adjusted. Items with no reasonable match stay unmatched and are never priced automatically.
+3. Human review step: the flow routes every extracted line through an editable review table before the quote can be built; the reviewer can correct anything, though the app does not force edits.
+4. Quote draft: priced lines from catalog list prices, an honest partial total when some lines are unresolved (shown as TBC), and a list of open flags to resolve before sending. The downloadable PDF is marked "DRAFT - requires human approval". The app never sends anything to a customer.
+5. Declared demo boundaries: synthetic catalog only; no real customer data; free AI tier with no uptime guarantee; PDF/photo/voice-note intake is future scope; the UI itself discloses the third-party AI processing.
+
+STRUCTURE YOUR REVIEW EXACTLY AS:
+1. Compliance check: go through requirements (a)-(d) one by one. For each, state PASS, FAIL or CANNOT VERIFY, with the specific evidence or the specific reason you could not verify it. Include anything an instructor's automated or manual check might trip on.
+2. Genuinely good: specific strengths with evidence, not flattery.
+3. Weak, confusing or risky: UX, honesty and safety framing, AI reliability, demo credibility, ranked by severity. For each, cite what you observed, not a generic guess.
+4. Top 5 concrete improvements realistic within a few hours, each with the reason it matters for this submission.
+5. Anything that could look like a dishonest or inflated claim to an instructor.
+End with a one-paragraph verdict: is this submittable tonight, and what is the single most important fix if any.
