@@ -246,8 +246,10 @@ function renderQuote() {
     : '<p class="disclosure" style="color:var(--ok);background:#d1fae5;border-color:#6ee7b7">All lines resolved. The rep should still sanity-check prices and availability.</p>';
   const gate = $('#review-gate'), btn = $('#btn-download');
   if (gate && btn) {
-    gate.classList.toggle('hidden', !open.length);
-    btn.disabled = open.length > 0;
+    // Acknowledgment is required before every PDF, flagged or clean: the rep
+    // confirms they reviewed all lines (and any open flags) before download.
+    gate.classList.remove('hidden');
+    btn.disabled = !($('#chk-reviewed') && $('#chk-reviewed').checked);
   }
 }
 
