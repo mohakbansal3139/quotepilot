@@ -271,6 +271,25 @@ function downloadPdf() {
   const anyTbc = lines.some(l => l.lineTotal == null);
   doc.setFontSize(11);
   doc.text(`Total${anyTbc ? ' (partial - some lines TBC)' : ''}: Rs ${total.toLocaleString('en-IN')}`, 14, finalY);
+  const openFlags = [];
+  lines.forEach(({ it, qty, unitPrice, stockIssue }) => {
+    if (qty == null) openFlags.push(`"${it.item_name}" has no quantity.`);
+    if (unitPrice == null) openFlags.push(`"${it.item_name}" has no catalog match, so it is unpriced.`);
+    if (stockIssue) openFlags.push(`"${it.item_name}" quantity exceeds sample stock.`);
+    it.flags.forEach(f => {
+      const norm = String(f).replace(/_/g, ' ').toLowerCase();
+      if (norm === 'missing quantity' && qty == null) return;
+      openFlags.push(`"${it.item_name}": ${norm}.`);
+    });
+  });
+  let fy = finalY + 8;
+  if (openFlags.length) {
+    doc.setFontSize(10); doc.setTextColor(180, 83, 9);
+    doc.text('Open flags to resolve before sending:', 14, fy); fy += 5;
+    doc.setFontSize(9);
+    openFlags.forEach(f => { doc.text('- ' + f, 16, fy); fy += 5; });
+    doc.setTextColor(0, 0, 0);
+  }
   doc.save(`${ref}-quote-draft.pdf`);
 }
 
