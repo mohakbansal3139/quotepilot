@@ -231,7 +231,11 @@ function renderQuote() {
     if (qty == null) open.push(`"${it.item_name}" has no quantity.`);
     if (unitPrice == null) open.push(`"${it.item_name}" has no catalog match, so it is unpriced.`);
     if (stockIssue) open.push(`"${it.item_name}" quantity exceeds sample stock.`);
-    it.flags.forEach(f => open.push(`"${it.item_name}": ${f}`));
+    it.flags.forEach(f => {
+      const norm = String(f).replace(/_/g, ' ').toLowerCase();
+      if (norm === 'missing quantity' && qty == null) return;
+      open.push(`"${it.item_name}": ${norm}.`);
+    });
   });
   $('#quote-flags').innerHTML = open.length
     ? `<p class="disclosure"><strong>Open flags to resolve before sending:</strong><br>${open.map(escapeHtml).join('<br>')}</p>`
