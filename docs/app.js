@@ -17,6 +17,30 @@ function setStatus(msg, isError) {
   el.classList.toggle('error', !!isError);
 }
 
+function buildPrompt(rfqText) {
+  const catalogLines = SAMPLE_CATALOG.map(c =>
+    `${c.sku} | ${c.name} | ${c.spec} | unit:${c.unit} | price:${c.price} | stock:${c.stock}`
+  ).join('
+');
+  return `You are an RFQ extraction engine for an Indian industrial-supplies distributor.
+Extract every requested line item from the customer's RFQ text and match each against the catalog.
+
+Return STRICT JSON only, no prose, with this exact shape:
+{"items":[{"raw_text":string,"item_name":string,"quantity":number|null,"unit":string|null,"specs":string,"matched_sku":string|null,"match_confidence":"high"|"medium"|"low"|"none","flags":string[]}]}
+
+Rules:
+- quantity null and a flag "missing_quantity" when the quantity is not stated.
+- matched_sku null and match_confidence "none" when no catalog line is a reasonable match. NEVER invent a price for unmatched items.
+- flags should note ambiguity, missing specs, unit mismatches, or deadline mentions.
+- specs: capture size, grade, brand, voltage, material etc. as short text.
+
+CATALOG:
+${catalogLines}
+
+RFQ TEXT:
+${rfqText.slice(0, 8000)}`;
+}
+
 async function extract() {
   const rfqText = $('#rfq-input').value.trim();
   if (!rfqText) { setStatus('Paste an enquiry first, or load the sample.', true); return; }
@@ -24,14 +48,42 @@ async function extract() {
   btn.disabled = true; btn.textContent = 'Extracting...';
   setStatus('AI is reading the enquiry and matching the catalog. This can take 10-30 seconds.');
   try {
-    const res = await fetch('/api/extract', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rfqText, catalog: SAMPLE_CATALOG })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
-    state.items = data.items.map(it => ({
+    let items = null, engine = '';
+    // Preferred: server-side function when deployed on Netlify (supports keyed providers).
+    try {
+      const res = await fetch('/api/extract', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rfqText, catalog: SAMPLE_CATALOG })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.items)) { items = data.items; engine = data.engine || 'server-function'; }
+      }
+    } catch (_) { /* static host - fall through to direct provider call */ }
+    if (!items) {
+      // Static-host path: call the free open-model API directly from the browser.
+      // No key is required or embedded; the UI discloses this third-party processing.
+      const res = await fetch('https://text.pollinations.ai/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [
+            { role: 'system', content: 'You reply with strict valid JSON only.' },
+            { role: 'user', content: buildPrompt(rfqText) }
+          ],
+          jsonMode: true
+        })
+      });
+      if (!res.ok) throw new Error('AI provider returned HTTP ' + res.status);
+      const raw = await res.text();
+      const start = raw.indexOf('{'), end = raw.lastIndexOf('}');
+      if (start === -1 || end === -1) throw new Error('AI returned no JSON');
+      const parsed = JSON.parse(raw.slice(start, end + 1));
+      if (!Array.isArray(parsed.items)) throw new Error('AI returned no items');
+      items = parsed.items; engine = 'pollinations-open-llm';
+    }
+    state.items = items.map(it => ({
       raw_text: it.raw_text || '',
       item_name: it.item_name || '',
       quantity: it.quantity,
@@ -45,7 +97,7 @@ async function extract() {
     renderItems();
     $('#step-review').classList.remove('hidden');
     $('#step-review').scrollIntoView({ behavior: 'smooth' });
-    setStatus('Extraction complete. Review every line before building the quote.');
+    setStatus('Extraction complete (' + engine + '). Review every line before building the quote.');
   } catch (e) {
     setStatus('Extraction failed: ' + e.message + ' You can retry, or add lines manually below.', true);
     $('#step-review').classList.remove('hidden');
