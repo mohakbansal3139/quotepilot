@@ -20,8 +20,7 @@ function setStatus(msg, isError) {
 function buildPrompt(rfqText) {
   const catalogLines = SAMPLE_CATALOG.map(c =>
     `${c.sku} | ${c.name} | ${c.spec} | unit:${c.unit} | price:${c.price} | stock:${c.stock}`
-  ).join('
-');
+  ).join('\n');
   return `You are an RFQ extraction engine for an Indian industrial-supplies distributor.
 Extract every requested line item from the customer's RFQ text and match each against the catalog.
 
