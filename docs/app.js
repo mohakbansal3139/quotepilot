@@ -82,16 +82,25 @@ async function extract() {
       if (!Array.isArray(parsed.items)) throw new Error('AI returned no items');
       items = parsed.items; engine = 'pollinations-open-llm';
     }
-    state.items = items.map(it => ({
-      raw_text: it.raw_text || '',
-      item_name: it.item_name || '',
-      quantity: it.quantity,
-      unit: it.unit || '',
-      specs: it.specs || '',
-      matched_sku: it.matched_sku || '',
-      match_confidence: it.match_confidence || 'none',
-      flags: Array.isArray(it.flags) ? it.flags : []
-    }));
+    state.items = items.map(it => {
+      const nz = normalizeSku(it.matched_sku);
+      const flags = Array.isArray(it.flags) ? it.flags.map(String) : [];
+      if (nz.snapped) { flags.push('match adjusted to nearest catalog SKU'); }
+      if (it.matched_sku && !nz.sku) { flags.push('suggested match not in catalog'); }
+      let conf = it.match_confidence || 'none';
+      if (!nz.sku) conf = 'none';
+      else if (nz.snapped && conf === 'high') conf = 'medium';
+      return {
+        raw_text: it.raw_text || '',
+        item_name: it.item_name || '',
+        quantity: it.quantity,
+        unit: it.unit || '',
+        specs: it.specs || '',
+        matched_sku: nz.sku,
+        match_confidence: conf,
+        flags
+      };
+    });
     if (!state.items.length) throw new Error('No line items found in the enquiry.');
     renderItems();
     $('#step-review').classList.remove('hidden');
@@ -124,7 +133,11 @@ function renderItems() {
     if (it.quantity == null) flags.push('<span class="flagchip">missing quantity</span>');
     if (it.match_confidence === 'none' || !it.matched_sku) flags.push('<span class="flagchip">no catalog match</span>');
     else if (it.match_confidence !== 'high') flags.push(`<span class="flagchip">${it.match_confidence} confidence</span>`);
-    it.flags.forEach(f => flags.push(`<span class="flagchip">${String(f).replace(/[<>]/g, '')}</span>`));
+    it.flags.forEach(f => {
+      const norm = String(f).replace(/_/g, ' ').toLowerCase();
+      if (norm === 'missing quantity' && it.quantity == null) return;
+      flags.push(`<span class="flagchip">${norm.replace(/[<>]/g, '')}</span>`);
+    });
     if (!flags.length) flags.push('<span class="flagchip ok">ok</span>');
     const sel = `<select data-i="${i}" class="match-sel">${options}</select>`;
     return `<tr class="${attn ? 'needs-attention' : ''}">
@@ -158,6 +171,17 @@ function syncItemFromInputs() {
     const cat = SAMPLE_CATALOG.find(c => c.sku === state.items[i].matched_sku);
     state.items[i].match_confidence = cat ? (state.items[i].match_confidence === 'none' ? 'medium' : state.items[i].match_confidence) : 'none';
   });
+}
+
+
+function normalizeSku(raw) {
+  if (!raw) return { sku: '', snapped: false };
+  const r = String(raw).trim().toUpperCase();
+  if (SAMPLE_CATALOG.some(c => c.sku === r)) return { sku: r, snapped: false };
+  const cand = SAMPLE_CATALOG.find(c => c.sku.toUpperCase().startsWith(r)) ||
+               SAMPLE_CATALOG.find(c => r.startsWith(c.sku.toUpperCase())) ||
+               SAMPLE_CATALOG.find(c => c.sku.toUpperCase().includes(r) || r.includes(c.sku.toUpperCase()));
+  return cand ? { sku: cand.sku, snapped: true } : { sku: '', snapped: false };
 }
 
 function escapeAttr(s) { return String(s || '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
