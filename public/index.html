@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuotePilot - AI-assisted quote drafting</title>
+<meta name="description" content="QuotePilot turns messy customer enquiries into structured, approval-ready quote drafts for industrial-supplies distributors.">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+<header>
+  <div class="wrap header-row">
+    <div>
+      <h1>QuotePilot</h1>
+      <p class="tagline">AI-assisted quote drafting for industrial-supplies distributors</p>
+    </div>
+    <span class="badge">Demo prototype</span>
+  </div>
+</header>
+<main class="wrap">
+
+  <section class="card" id="step-rfq">
+    <h2><span class="stepnum">1</span> Paste the customer enquiry</h2>
+    <p class="muted">Paste the RFQ text exactly as the rep received it. The AI extracts items, quantities and specifications, and flags anything ambiguous.</p>
+    <textarea id="rfq-input" rows="8" placeholder="Paste the customer's enquiry here..."></textarea>
+    <div class="row">
+      <button id="btn-sample" class="ghost" type="button">Load sample enquiry</button>
+      <button id="btn-extract" class="primary" type="button">Extract with AI</button>
+    </div>
+    <p class="disclosure">Demo notice: pasted text is processed by a third-party AI provider (Pollinations.ai, open models) for extraction. Do not paste real or confidential customer requests - use the synthetic sample or test text only.</p>
+    <p id="extract-status" class="status" role="status"></p>
+  </section>
+
+  <section class="card hidden" id="step-review">
+    <h2><span class="stepnum">2</span> Review extracted items</h2>
+    <p class="muted">Check every line. Edit quantities, fix specs, and confirm or change the catalog match. Lines needing attention are flagged. Unmatched items are never priced automatically.</p>
+    <div id="items-table"></div>
+    <div class="row">
+      <button id="btn-add-item" class="ghost" type="button">Add line manually</button>
+      <button id="btn-build-quote" class="primary" type="button">Review quote draft</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="step-quote">
+    <h2><span class="stepnum">3</span> Approval-ready quote draft</h2>
+    <p class="muted">Nothing is sent to any customer. The rep reviews this draft, resolves open flags, then downloads the PDF.</p>
+    <div id="quote-meta" class="quote-meta"></div>
+    <div id="quote-preview"></div>
+    <div id="quote-flags"></div>
+    <div class="row">
+      <button id="btn-back" class="ghost" type="button">Back to items</button>
+      <button id="btn-download" class="primary" type="button">Download quote PDF</button>
+    </div>
+  </section>
+
+  <section class="card" id="catalog-card">
+    <h2>Sample catalog <span class="muted-inline">(synthetic demo data)</span></h2>
+    <p class="muted">A real deployment matches against the distributor's own catalog, stock and prices. This prototype uses the synthetic sample below.</p>
+    <div id="catalog-table"></div>
+  </section>
+
+</main>
+<footer>
+  <div class="wrap">
+    <p>QuotePilot prototype - AI in Business course project. Human approval is required before any quote reaches a customer. Extraction is AI-assisted and can be wrong; the review step exists for that reason.</p>
+  </div>
+</footer>
+<script src="catalog.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
