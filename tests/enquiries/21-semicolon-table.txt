@@ -1,0 +1,5 @@
+Material;Description;Required Qty;UOM
+1;Grinding wheel 4 inch A24;6;packs
+2;Safety helmet IS 2925;12;pcs
+3;Leather safety gloves 14 inch;10;pairs
+Please include GST and freight separately.

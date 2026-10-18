@@ -1,0 +1,455 @@
+[
+  {
+    "id": "01-whatsapp-one-liner",
+    "items": [
+      {
+        "match": "6204ZZ",
+        "quantity": 12,
+        "unit": "pcs",
+        "sku": "BRG-6204ZZ"
+      }
+    ],
+    "flags": [
+      "deadline"
+    ]
+  },
+  {
+    "id": "02-hinglish",
+    "items": [
+      {
+        "match": "motor",
+        "quantity": 2,
+        "unit": "nos",
+        "sku": "MTR-2HP-3P"
+      }
+    ],
+    "flags": [
+      "deadline"
+    ]
+  },
+  {
+    "id": "03-forwarded-thread",
+    "items": [
+      {
+        "match": "6205ZZ",
+        "quantity": 18,
+        "unit": "pcs",
+        "sku": "BRG-6205ZZ"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "04-mixed-units",
+    "items": [
+      {
+        "match": "1 HP motor",
+        "quantity": 6,
+        "unit": "nos",
+        "sku": "MTR-1HP-3P"
+      },
+      {
+        "match": "6204ZZ",
+        "quantity": 15,
+        "unit": "pcs",
+        "sku": "BRG-6204ZZ"
+      },
+      {
+        "match": "GI pipe",
+        "quantity": 80,
+        "unit": "m",
+        "sku": null
+      },
+      {
+        "match": "welding electrode",
+        "quantity": 40,
+        "unit": "kg",
+        "sku": null
+      },
+      {
+        "match": "gloves",
+        "quantity": 8,
+        "unit": "pair",
+        "sku": "GLV-LEA-14"
+      }
+    ],
+    "flags": [
+      "unit mismatch"
+    ]
+  },
+  {
+    "id": "05-part-number-typo",
+    "items": [
+      {
+        "match": "6204",
+        "quantity": 24,
+        "unit": "pcs",
+        "sku": "BRG-6204ZZ"
+      }
+    ],
+    "flags": [
+      "SKU normalized"
+    ]
+  },
+  {
+    "id": "06-m12x50-unknown",
+    "items": [
+      {
+        "match": "M12x50",
+        "quantity": 75,
+        "unit": "pcs",
+        "sku": null
+      }
+    ],
+    "flags": [
+      "no catalog match",
+      "deadline"
+    ]
+  },
+  {
+    "id": "07-gst-delivery-terms",
+    "items": [
+      {
+        "match": "helmet",
+        "quantity": 10,
+        "unit": "pcs",
+        "sku": "SFT-HV-90"
+      }
+    ],
+    "flags": [
+      "deadline"
+    ]
+  },
+  {
+    "id": "08-no-quantity",
+    "items": [
+      {
+        "match": "UCFL205",
+        "quantity": null,
+        "unit": "pcs",
+        "sku": "BRG-UCFL205"
+      }
+    ],
+    "flags": [
+      "missing quantity"
+    ]
+  },
+  {
+    "id": "09-duplicate-lines",
+    "items": [
+      {
+        "match": "6204ZZ",
+        "quantity": 10,
+        "unit": "pcs",
+        "sku": "BRG-6204ZZ"
+      },
+      {
+        "match": "6204ZZ",
+        "quantity": 5,
+        "unit": "pcs",
+        "sku": "BRG-6204ZZ"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "10-markdown-table",
+    "items": [
+      {
+        "match": "M8",
+        "quantity": 3,
+        "unit": "box of 100",
+        "sku": "FST-M8X30-88"
+      },
+      {
+        "match": "6306-2RS",
+        "quantity": 8,
+        "unit": "pcs",
+        "sku": "BRG-6306-2RS"
+      },
+      {
+        "match": "1 HP motor",
+        "quantity": 1,
+        "unit": "nos",
+        "sku": "MTR-1HP-3P"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "11-very-long-rfq",
+    "items": [
+      {
+        "match": "6205ZZ",
+        "quantity": 22,
+        "unit": "pcs",
+        "sku": "BRG-6205ZZ"
+      },
+      {
+        "match": "M8 x 30",
+        "quantity": 12,
+        "unit": "box of 100",
+        "sku": "FST-M8X30-88"
+      },
+      {
+        "match": "UCFL205",
+        "quantity": 9,
+        "unit": "pcs",
+        "sku": "BRG-UCFL205"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "12-fractional-size-no-qty",
+    "items": [
+      {
+        "match": "hose clamp",
+        "quantity": null,
+        "unit": "pcs",
+        "sku": null
+      }
+    ],
+    "flags": [
+      "missing quantity",
+      "no catalog match"
+    ]
+  },
+  {
+    "id": "13-mtr-alias",
+    "items": [
+      {
+        "match": "GI pipe",
+        "quantity": 25,
+        "unit": "m",
+        "sku": null
+      }
+    ],
+    "flags": [
+      "unit mismatch"
+    ]
+  },
+  {
+    "id": "14-decimal-quantity",
+    "items": [
+      {
+        "match": "copper flexible cable",
+        "quantity": 2.5,
+        "unit": "kg",
+        "sku": null
+      }
+    ],
+    "flags": [
+      "unit mismatch"
+    ]
+  },
+  {
+    "id": "15-lowercase-sku",
+    "items": [
+      {
+        "match": "6205zz",
+        "quantity": 24,
+        "unit": "pcs",
+        "sku": "BRG-6205ZZ"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "16-unlisted-item",
+    "items": [
+      {
+        "match": "XJ-77",
+        "quantity": 4,
+        "unit": "drum",
+        "sku": null
+      }
+    ],
+    "flags": [
+      "no catalog match"
+    ]
+  },
+  {
+    "id": "17-motor-alternatives",
+    "items": [
+      {
+        "match": "2 HP",
+        "quantity": 1,
+        "unit": "nos",
+        "sku": "MTR-2HP-3P"
+      },
+      {
+        "match": "5 HP",
+        "quantity": 1,
+        "unit": "nos",
+        "sku": "MTR-5HP-3P"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "18-deadline-and-quantity",
+    "items": [
+      {
+        "match": "M10X40",
+        "quantity": 2,
+        "unit": "box",
+        "sku": "FST-M10X40-88"
+      }
+    ],
+    "flags": [
+      "deadline"
+    ]
+  },
+  {
+    "id": "19-separator-variant-sku",
+    "items": [
+      {
+        "match": "6306",
+        "quantity": 6,
+        "unit": "pcs",
+        "sku": "BRG-6306-2RS"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "20-email-signature-noise",
+    "items": [
+      {
+        "match": "UCFL205",
+        "quantity": 5,
+        "unit": "pcs",
+        "sku": "BRG-UCFL205"
+      },
+      {
+        "match": "1HP",
+        "quantity": 2,
+        "unit": "nos",
+        "sku": "MTR-1HP-3P"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "21-semicolon-table",
+    "items": [
+      {
+        "match": "grinding wheel",
+        "quantity": 6,
+        "unit": "pack",
+        "sku": "GRW-4IN"
+      },
+      {
+        "match": "helmet",
+        "quantity": 12,
+        "unit": "pcs",
+        "sku": "SFT-HV-90"
+      },
+      {
+        "match": "gloves",
+        "quantity": 10,
+        "unit": "pair",
+        "sku": "GLV-LEA-14"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "22-half-inch-size",
+    "items": [
+      {
+        "match": "washer",
+        "quantity": 20,
+        "unit": "pcs",
+        "sku": null
+      }
+    ],
+    "flags": [
+      "no catalog match"
+    ]
+  },
+  {
+    "id": "23-bullet-list-over-stock",
+    "items": [
+      {
+        "match": "helmet",
+        "quantity": 600,
+        "unit": "pcs",
+        "sku": "SFT-HV-90"
+      },
+      {
+        "match": "gloves",
+        "quantity": 400,
+        "unit": "pair",
+        "sku": "GLV-LEA-14"
+      },
+      {
+        "match": "5 HP",
+        "quantity": 8,
+        "unit": "nos",
+        "sku": "MTR-5HP-3P"
+      }
+    ],
+    "flags": [
+      "stock"
+    ]
+  },
+  {
+    "id": "24-nos-pcs-pair-coil",
+    "items": [
+      {
+        "match": "MTR-2HP-3P",
+        "quantity": 3,
+        "unit": "nos",
+        "sku": "MTR-2HP-3P"
+      },
+      {
+        "match": "6204ZZ",
+        "quantity": 7,
+        "unit": "pcs",
+        "sku": "BRG-6204ZZ"
+      },
+      {
+        "match": "GLV-LEA-14",
+        "quantity": 5,
+        "unit": "pair",
+        "sku": "GLV-LEA-14"
+      },
+      {
+        "match": "CBL-2.5SQ-CU",
+        "quantity": 2,
+        "unit": "coil",
+        "sku": "CBL-2.5SQ-CU"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "id": "25-wrapped-multiline",
+    "items": [
+      {
+        "match": "grinding wheel",
+        "quantity": 4,
+        "unit": "pack",
+        "sku": "GRW-4IN"
+      },
+      {
+        "match": "E6013",
+        "quantity": 3,
+        "unit": "carton",
+        "sku": "WLD-E6013-3.15"
+      },
+      {
+        "match": "GI pipe",
+        "quantity": null,
+        "unit": "length",
+        "sku": "PIP-GI-2IN"
+      }
+    ],
+    "flags": [
+      "missing quantity",
+      "deadline"
+    ]
+  }
+]

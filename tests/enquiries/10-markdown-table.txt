@@ -1,0 +1,6 @@
+Kindly quote below:
+| Sr | Material | Qty | Unit |
+|---:|---|---:|---|
+| 1 | M8 x 30 hex bolt, class 8.8, zinc plated (FST-M8X30-88) | 3 | boxes of 100 |
+| 2 | Ball bearing 6306-2RS | 8 | pcs |
+| 3 | Three-phase 1 HP motor, 415 V | 1 | nos |
